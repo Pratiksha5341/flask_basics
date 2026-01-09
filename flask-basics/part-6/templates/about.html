@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block title %}About - To-Do List{% endblock %}
+
+{% block content %}
+<h2>About This To-Do List App</h2>
+
+<div class="about-content">
+    <p class="about-paragraph">
+        Welcome to the Personal To-Do List App! This application was built using Flask,
+        a lightweight Python web framework. It helps you organize and manage your daily
+        tasks efficiently.
+    </p>
+    
+    <div class="features-section">
+        <h3 class="features-title">✨ Features</h3>
+        <ul class="features-list">
+            <li class="features-item">
+                ✅ <strong>Task Management:</strong> Create, view, and organize your tasks
+            </li>
+            <li class="features-item">
+                🏷️ <strong>Priority Levels:</strong> Set High, Medium, or Low priority for tasks
+            </li>
+            <li class="features-item">
+                📊 <strong>Status Tracking:</strong> Track tasks as Pending, In Progress, or Completed
+            </li>
+            <li class="features-item">
+                📱 <strong>Responsive Design:</strong> Works on both desktop and mobile devices
+            </li>
+            <li class="features-item">
+                📈 <strong>Task Statistics:</strong> View overview of your task completion
+            </li>
+        </ul>
+    </div>
+    
+    <div class="tech-section">
+        <h3 class="tech-title">🛠️ Technologies Used</h3>
+        <div class="tech-tags">
+            <span class="tech-tag tech-flask">Flask</span>
+            <span class="tech-tag tech-python">Python</span>
+            <span class="tech-tag tech-html">HTML5</span>
+            <span class="tech-tag tech-css">CSS3</span>
+            <span class="tech-tag tech-jinja">Jinja2</span>
+        </div>
+    </div>
+    
+    <div class="instructions-section">
+        <h3 class="instructions-title">🚀 How to Use</h3>
+        <ol class="instructions-list">
+            <li class="instructions-item">Click "Add Task" to create new tasks</li>
+            <li class="instructions-item">Set appropriate priority and status for each task</li>
+            <li class="instructions-item">Click on any task to view its details</li>
+            <li class="instructions-item">Update task status as you complete them</li>
+            <li class="instructions-item">Use the statistics to track your progress</li>
+        </ol>
+    </div>
+    
+    <div class="about-footer">
+        <p>This app was created as part of a Flask learning exercise.</p>
+        <p class="note-text">Note: Tasks are stored in memory and will reset when the server restarts.</p>
+    </div>
+</div>
+{% endblock %}

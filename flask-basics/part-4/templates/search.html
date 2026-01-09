@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Results for "{{ query }}"</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #f0f4f8;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        nav {
+            margin-bottom: 20px;
+            padding: 10px;
+            background: #edf2f7;
+            border-radius: 5px;
+        }
+        nav a {
+            margin-right: 15px;
+            color: #4a5568;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .search-header {
+            background: linear-gradient(135deg, #4299e1 0%, #3182ce 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        .search-header h1 {
+            margin: 0;
+        }
+        .search-form {
+            margin: 20px 0;
+            display: flex;
+        }
+        .search-form input[type="text"] {
+            flex: 1;
+            padding: 10px;
+            border: 2px solid #cbd5e0;
+            border-radius: 5px 0 0 5px;
+            font-size: 16px;
+        }
+        .search-form button {
+            padding: 10px 20px;
+            background: #48bb78;
+            color: white;
+            border: none;
+            border-radius: 0 5px 5px 0;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .search-form button:hover {
+            background: #38a169;
+        }
+        .result-count {
+            color: #718096;
+            margin-bottom: 20px;
+        }
+        .result-item {
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px 0;
+        }
+        .result-item h3 {
+            margin-top: 0;
+            color: #2d3748;
+        }
+        .result-item .category {
+            display: inline-block;
+            padding: 3px 10px;
+            background: #e9d8fd;
+            color: #6b46c1;
+            border-radius: 10px;
+            font-size: 12px;
+            margin-right: 10px;
+        }
+        .result-item .price {
+            color: #48bb78;
+            font-weight: bold;
+            font-size: 18px;
+            margin: 10px 0;
+        }
+        .no-results {
+            background: #fed7d7;
+            border: 1px solid #fc8181;
+            color: #c53030;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .info-box {
+            background: #fffaf0;
+            border-left: 4px solid #ed8936;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        .code-block {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: monospace;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav>
+    <a href="/">Home</a>
+    <a href="/about/">About</a>
+    <a href="/links">URL Builder</a>
+    <a href="/products">Products</a>
+    <a href="/categories">Product Categories</a>
+    <a href="/search">Search</a>
+</nav>
+
+        <div class="search-header">
+            <h1>Search Results</h1>
+            <p>Search query: "{{ query }}"</p>
+        </div>
+
+        <!-- Search Form -->
+        <form action="/search" method="POST" class="search-form">
+            <input type="text" name="search_query" placeholder="Search for products..." value="{{ query }}">
+            <button type="submit">Search</button>
+        </form>
+
+        <p>Or try these quick searches: 
+            <a href="/search/python">python</a>, 
+            <a href="/search/wireless">wireless</a>, 
+            <a href="/search/lamp">lamp</a>
+        </p>
+
+        <div class="result-count">
+            Found {{ results|length }} result(s) for "{{ query }}"
+        </div>
+
+        {% if results %}
+            {% for pid, product in results %}
+                <div class="result-item">
+                    <span class="category">{{ product.category|title }}</span>
+                    <h3><a href="/product/{{ pid }}">{{ product.name }}</a></h3>
+                    <div class="price">${{ "%.2f"|format(product.price) }}</div>
+                    <p>{{ product.description }}</p>
+                    <p>
+                        <a href="/product/{{ pid }}">View Product</a> | 
+                        <a href="/category/{{ product.category }}/product/{{ pid }}">View in Category</a>
+                    </p>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="no-results">
+                <h2>No Results Found</h2>
+                <p>No products found matching "{{ query }}". Try a different search term.</p>
+            </div>
+        {% endif %}
+
+        <div class="info-box">
+            <strong>How the Search Route Works</strong>
+            <p>URL Pattern: <code>/search/&lt;query&gt;</code></p>
+            <p>Current URL: <code>/search/{{ query }}</code></p>
+            
+            <div class="code-block">
+@app.route('/search/&lt;query&gt;')<br>
+def search_results(query):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;# Filter products based on search query<br>
+&nbsp;&nbsp;&nbsp;&nbsp;results = []<br>
+&nbsp;&nbsp;&nbsp;&nbsp;for pid, product in products.items():<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if query.lower() in product['name'].lower() or <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;query.lower() in product['description'].lower():<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;results.append((pid, product))<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;return render_template('search.html', query=query, results=results)
+            </div>
+        </div>
+
+                        <h3>All Products</h3>
+        <ul>
+            <li><a href="/product/1">Wireless Mouse</a> - $29.99</li>
+            <li><a href="/product/2">Python Book</a> - $39.99</li>
+            <li><a href="/product/3">Laptop Stand</a> - $45.00</li>
+            <li><a href="/product/4">Desk Lamp</a> - $34.99</li>
+        </ul>
+        
+        <p><a href="/">Back to Home</a></p>
+    </div>
+</body>
+</html>

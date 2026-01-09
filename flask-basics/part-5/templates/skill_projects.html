@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block title %}Projects using {{ skill_name }} | {{ info.name }}{% endblock %}
+
+{% block content %}
+
+<div class="card">
+    <h1>Projects using {{ skill_name }}</h1>
+    <p>Showing {{ projects|length }} project(s) that use <strong>{{ skill_name }}</strong></p>
+    
+    <a href="{{ url_for('projects') }}" class="btn btn-secondary">
+        ← Back to All Projects
+    </a>
+</div>
+
+{% if projects|length > 0 %}
+<div class="projects-grid">
+    {% for project in projects %}
+    <div class="project-card">
+        <h3>{{ project.name }}</h3>
+        <p>{{ project.description }}</p>
+        
+        <div class="tech-tags">
+            {% for tech in project.tech %}
+                <a href="{{ url_for('skill_projects', skill_name=tech) }}" class="tech-tag">
+                    {{ tech }}
+                </a>
+            {% endfor %}
+        </div>
+        
+        {% if project.status == 'Completed' %}
+            <span class="status status-completed">{{ project.status }}</span>
+        {% elif project.status == 'In Progress' %}
+            <span class="status status-in-progress">{{ project.status }}</span>
+        {% else %}
+            <span class="status status-planned">{{ project.status }}</span>
+        {% endif %}
+        
+        <div class="project-actions">
+            <a href="{{ url_for('project_detail', project_id=project.id) }}" class="btn btn-primary">
+                View Details
+            </a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="card">
+    <h2>No Projects Found</h2>
+    <p>No projects currently use <strong>{{ skill_name }}</strong>.</p>
+    <a href="{{ url_for('projects') }}" class="btn btn-primary">
+        View All Projects
+    </a>
+</div>
+{% endif %}
+
+<div class="card">
+    <h3>All Skills</h3>
+    <div class="tech-tags">
+        {% for skill in info.skills %}
+            <a href="{{ url_for('skill_projects', skill_name=skill) }}" class="tech-tag">
+                {{ skill }}
+            </a>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}Add Task - To-Do List{% endblock %}
+
+{% block content %}
+<h2>Add New Task</h2>
+
+<form method="POST" action="{{ url_for('add_task') }}" class="form-max-width">
+    <div class="form-group">
+        <label for="title">Task Title:</label>
+        <input type="text" id="title" name="title" required placeholder="Enter task title">
+    </div>
+    
+    <div class="form-group">
+        <label for="status">Status:</label>
+        <select id="status" name="status" required>
+            <option value="">Select status</option>
+            <option value="Pending">Pending</option>
+            <option value="In Progress">In Progress</option>
+            <option value="Completed">Completed</option>
+        </select>
+    </div>
+    
+    <div class="form-group">
+        <label for="priority">Priority:</label>
+        <select id="priority" name="priority" required>
+            <option value="">Select priority</option>
+            <option value="High">High</option>
+            <option value="Medium">Medium</option>
+            <option value="Low">Low</option>
+        </select>
+    </div>
+    
+    <div class="form-buttons">
+        <button type="submit" class="btn">Add Task</button>
+        <a href="{{ url_for('index') }}" class="btn btn-secondary">Cancel</a>
+    </div>
+</form>
+
+<div class="form-instructions">
+    <h3>Instructions:</h3>
+    <ul>
+        <li>Make sure to provide a clear and descriptive title</li>
+        <li>Update the status as you work on your tasks</li>
+        <li>Use priorities to organize your workload</li>
+    </ul>
+</div>
+{% endblock %}

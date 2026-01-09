@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {% if post %}
+        {{ post.title }} | {{ info.name }}
+    {% else %}
+        Blog Post Not Found | {{ info.name }}
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+{% if post %}
+
+<div class="card">
+    <div class="blog-post-header">
+        <h1>{{ post.title }}</h1>
+        <div class="blog-meta">
+            <span class="blog-date">{{ post.date }}</span>
+            <span class="blog-category">{{ post.category }}</span>
+            <span class="blog-author">By {{ post.author }}</span>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="blog-content">
+        <p>{{ post.content }}</p>
+    </div>
+    
+    <div class="blog-footer">
+        <a href="{{ url_for('blog') }}" class="btn btn-secondary">
+            ← Back to Blog
+        </a>
+    </div>
+</div>
+
+{% else %}
+
+<!-- Blog Post Not Found -->
+<div class="card">
+    <h2>Blog Post Not Found</h2>
+    <p>Sorry, blog post #{{ post_id }} doesn't exist.</p>
+    
+    <a href="{{ url_for('blog') }}" class="btn btn-primary">
+        View All Blog Posts
+    </a>
+</div>
+
+{% endif %}
+{% endblock %}

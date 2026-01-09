@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block title %}{{ task.title }} - Task Details{% endblock %}
+
+{% block content %}
+<div class="task-detail-container">
+    <h2>Task Details</h2>
+    
+    <div class="task-detail-card">
+        <h3 class="task-detail-title">{{ task.title|upper }}</h3>
+        
+        <div class="task-detail-grid">
+            <div>
+                <p><strong>Task ID:</strong> {{ task.id }}</p>
+            </div>
+            <div>
+                <p><strong>Priority:</strong> 
+                    <span class="priority-{{ task.priority|lower }}">
+                        {{ task.priority }}
+                    </span>
+                </p>
+            </div>
+        </div>
+        
+        <div class="task-detail-status">
+            <p><strong>Status:</strong> 
+                <span class="status-{{ task.status|lower|replace(' ', '-') }}">
+                    {{ task.status }}
+                </span>
+            </p>
+        </div>
+        
+        {% if task.status == 'Completed' %}
+        <div class="status-message status-message-completed">
+            <p>🎉 This task has been completed! Great job!</p>
+        </div>
+        {% elif task.status == 'In Progress' %}
+        <div class="status-message status-message-in-progress">
+            <p>⚡ You're currently working on this task. Keep going!</p>
+        </div>
+        {% else %}
+        <div class="status-message status-message-pending">
+            <p>📝 This task is pending. Time to get started!</p>
+        </div>
+        {% endif %}
+    </div>
+    
+    <div class="task-actions">
+        <a href="{{ url_for('index') }}" class="btn">← Back to All Tasks</a>
+        <a href="{{ url_for('add_task') }}" class="btn">➕ Add Another Task</a>
+    </div>
+</div>
+{% endblock %}

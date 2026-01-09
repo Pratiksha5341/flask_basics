@@ -1,0 +1,62 @@
+/* style.css - Shared styles for all templates */
+
+/* Table styles for category_product.html */
+.category-product-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+.category-product-table th,
+.category-product-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.category-product-table th {
+    background: #edf2f7;
+}
+
+.category-product-table tr:nth-child(even) {
+    background: #f7fafc;
+}
+
+/* Table styles for user_post.html */
+.user-post-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+.user-post-table th,
+.user-post-table td {
+    padding: 10px;
+    text-align: left;
+}
+
+.user-post-table th {
+    background: #edf2f7;
+}
+
+.user-post-table tr:nth-child(even) {
+    background: #f7fafc;
+}
+
+/* General data table */
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+.data-table th,
+.data-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.data-table th {
+    background: #edf2f7;
+}

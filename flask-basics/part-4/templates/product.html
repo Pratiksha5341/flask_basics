@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% if product %}Product #{{ product_id }} - {{ product.name }}{% else %}Product Not Found{% endif %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #f0f4f8;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        nav {
+            margin-bottom: 20px;
+            padding: 10px;
+            background: #edf2f7;
+            border-radius: 5px;
+        }
+        nav a {
+            margin-right: 15px;
+            color: #4a5568;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .product-card {
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 25px;
+            margin: 20px 0;
+        }
+        .product-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .product-id {
+            background: #4299e1;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+        .price-tag {
+            background: #48bb78;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .not-found {
+            background: #fed7d7;
+            border: 1px solid #fc8181;
+            color: #c53030;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .not-found h2 {
+            margin-top: 0;
+        }
+        .info-box {
+            background: #f0fff4;
+            border-left: 4px solid #48bb78;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        .category-badge {
+            display: inline-block;
+            padding: 5px 15px;
+            background: #e9d8fd;
+            color: #6b46c1;
+            border-radius: 15px;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav>
+            <a href="/">Home</a>
+            <a href="/about/">About</a>
+            <a href="/links">URL Builder</a>
+            <a href="/products">Products</a>
+            <a href="/categories">Product Categories</a>
+            <a href="/search">Search</a>
+        </nav>
+        {% if product %}
+        <div class="category-badge">{{ product.category|title }}</div>           
+            <div class="product-card">
+                <div class="product-header">
+                    <h1>{{ product.name }}</h1>
+                    <span class="price-tag">${{ "%.2f"|format(product.price) }}</span>
+                </div>
+                <span class="product-id">Product ID: {{ product_id }}</span>
+                <p>{{ product.description }}</p>    
+                <div class="info-box">
+                    <strong>How this route works:</strong>
+                    <p>The URL <code>/product/{{ product_id }}</code> uses the route:</p>
+                    <p><code>@app.route('/product/&lt;int:product_id&gt;')</code></p>
+                    <p>Only integer values are accepted. Try changing the product ID in the URL:</p>
+                    <ul>
+                        <li><a href="/product/1">Product 1</a></li>
+                        <li><a href="/product/2">Product 2</a></li>
+                        <li><a href="/product/99">Product 99 (Not Found)</a></li>
+                    </ul>
+                </div>
+            </div>
+            <h3>Available Products</h3>
+            <ul>
+                <li><a href="/product/1">Product 1</a></li>
+                <li><a href="/product/2">Product 2</a></li>
+                <li><a href="/product/3">Product 3</a></li>
+                <li><a href="/product/4">Product 4</a></li>
+            </ul>
+            {% else %}
+            <div class="not-found">
+                <h2>Product Not Found</h2>
+                <p>Sorry, product #{{ product_id }} doesn't exist in our database.</p>
+                <p>We have products with IDs 1 through 5.</p>
+            </div>
+            <h3>Available Products</h3>
+            <ul>
+                <li><a href="/product/1">Product 1: Wireless Mouse</a></li>
+                <li><a href="/product/2">Product 2: Python Book</a></li>
+                <li><a href="/product/3">Product 3: Laptop Stand</a></li>
+                <li><a href="/product/4">Product 4: Desk Lamp</a></li>
+            </ul>
+            {% endif %}
+            <p><a href="/">Back to Home</a></p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}Skills | {{ info.name }}{% endblock %}
+
+{% block content %}
+
+<div class="card">
+    <h1>My Skills</h1>
+    <p>Browse projects by the technologies used.</p>
+</div>
+
+<div class="card">
+    <h2>All Technologies</h2>
+    <div class="tech-tags">
+        {% for skill in skills %}
+            <a href="{{ url_for('skill_projects', skill_name=skill) }}" class="tech-tag">
+                {{ skill }}
+            </a>
+        {% endfor %}
+    </div>
+</div>
+
+{% for skill in info.skills %}
+<div class="card">
+    <h3>{{ skill }}</h3>
+    
+    <!-- Project list container -->
+    <div class="project-list">
+        {% for project in projects %}
+            {% if skill in project.tech %}
+                <div class="project-item">
+                    <a href="{{ url_for('project_detail', project_id=project.id) }}">
+                        {{ project.name }}
+                    </a>
+                </div>
+            {% endif %}
+        {% else %}
+            <p>No projects using {{ skill }} yet.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endfor %}
+
+{% endblock %}

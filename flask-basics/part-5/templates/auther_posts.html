@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}Posts by {{ author_name }} | {{ info.name }}{% endblock %}
+
+{% block content %}
+
+<div class="card">
+    <div class="author-header">
+        <h1>Posts by {{ author_name }}</h1>
+        <p>Showing {{ posts|length }} post(s) written by {{ author_name }}</p>
+        
+        <a href="{{ url_for('blog') }}" class="btn btn-secondary">
+            ← Back to All Posts
+        </a>
+    </div>
+</div>
+
+{% if posts|length > 0 %}
+    {% for post in posts %}
+    <div class="card blog-post">
+        <div class="blog-header">
+            <h2>{{ post.title }}</h2>
+            <div class="blog-meta">
+                <span class="blog-date">{{ post.date }}</span>
+                <span class="blog-category">{{ post.category }}</span>
+                <span class="blog-author">By {{ post.author }}</span>
+            </div>
+        </div>
+        
+        <div class="blog-content">
+            <p>{{ post.content }}</p>
+        </div>
+        
+        <div class="blog-footer">
+            <a href="{{ url_for('blog_post', post_id=post.id) }}" class="btn btn-secondary">
+                Read Full Post
+            </a>
+        </div>
+    </div>
+    {% endfor %}
+{% else %}
+<div class="card">
+    <h2>No Posts Found</h2>
+    <p>No blog posts found by {{ author_name }}.</p>
+    <a href="{{ url_for('blog') }}" class="btn btn-primary">
+        View All Blog Posts
+    </a>
+</div>
+{% endif %}
+
+{% endblock %}

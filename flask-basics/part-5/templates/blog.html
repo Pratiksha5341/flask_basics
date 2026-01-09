@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}Blog | {{ info.name }}{% endblock %}
+
+{% block content %}
+
+<div class="card">
+    <h1>My Blog</h1>
+    <p>Thoughts, tutorials, and updates on my journey in web development.</p>
+</div>
+
+{% for post in posts %}
+<div class="card blog-post">
+    <div class="blog-header">
+        <h2>{{ post.title }}</h2>
+        <div class="blog-meta">
+            <span class="blog-date">{{ post.date }}</span>
+            <span class="blog-category">{{ post.category }}</span>
+            <!-- Make author name clickable -->
+            <a href="{{ url_for('author_posts', author_name=post.author) }}" class="blog-author">
+                By {{ post.author }}
+            </a>
+        </div>
+    </div>
+    
+    <div class="blog-content">
+        <p>{{ post.content }}</p>
+    </div>
+    
+    <div class="blog-footer">
+        <a href="{{ url_for('blog_post', post_id=post.id) }}" class="btn btn-secondary">
+            Read More
+        </a>
+    </div>
+</div>
+{% endfor %}
+
+{% if posts|length == 0 %}
+<div class="card">
+    <h2>No Blog Posts Yet</h2>
+    <p>Check back soon for new articles!</p>
+</div>
+{% endif %}
+
+{% endblock %}

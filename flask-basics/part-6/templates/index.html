@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block title %}All Tasks - To-Do List{% endblock %}
+
+{% block content %}
+<h2>All Tasks ({{ tasks|length }})</h2>
+
+{% if tasks %}
+<div class="tasks-container" role="list">
+    {% for task in tasks %}
+    <div class="task-item" role="listitem">
+        <div class="task-title">
+            <a href="{{ url_for('view_task', id=task.id) }}" class="task-link">
+                {{ task.title|upper }}
+            </a>
+        </div>
+        <div class="task-meta">
+            <span class="status-{{ task.status|lower|replace(' ', '-') }}">
+                Status: {{ task.status }}
+            </span>
+            <span class="priority-{{ task.priority|lower }}">
+                Priority: {{ task.priority }}
+            </span>
+            <span>ID: {{ task.id }}</span>
+        </div>
+        
+        {% if task.status == 'Completed' %}
+        <p class="task-completed">✅ Task completed!</p>
+        {% elif task.status == 'In Progress' %}
+        <p class="task-in-progress">⏳ Working on it...</p>
+        {% else %}
+        <p class="task-pending">📝 Still pending</p>
+        {% endif %}
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<p class="no-tasks-message">No tasks found. <a href="{{ url_for('add_task') }}">Add your first task!</a></p>
+{% endif %}
+
+<div class="top-margin-30">
+    <a href="{{ url_for('add_task') }}" class="btn">➕ Add New Task</a>
+</div>
+
+<!-- Statistics Section -->
+{% if tasks %}
+<div class="statistics-section">
+    <h3>Task Statistics</h3>
+    <div class="statistics-grid">
+        <div>
+            <p><strong>Total Tasks:</strong> {{ tasks|length }}</p>
+        </div>
+        <div>
+            <p><strong>Completed:</strong> {{ tasks|selectattr('status', 'equalto', 'Completed')|list|length }}</p>
+        </div>
+        <div>
+            <p><strong>In Progress:</strong> {{ tasks|selectattr('status', 'equalto', 'In Progress')|list|length }}</p>
+        </div>
+        <div>
+            <p><strong>Pending:</strong> {{ tasks|selectattr('status', 'equalto', 'Pending')|list|length }}</p>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

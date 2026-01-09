@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {% if project %}
+        {{ project.name }} | {{ info.name }}
+    {% else %}
+        Project Not Found | {{ info.name }}
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+{% if project %}
+
+<!-- Project Found -->
+<div class="card">
+    <div class="project-header">
+        <div>
+            <h2 class="project-title">{{ project.name }}</h2>
+
+            {% if project.status == 'Completed' %}
+                <span class="status status-completed">{{ project.status }}</span>
+            {% elif project.status == 'In Progress' %}
+                <span class="status status-in-progress">{{ project.status }}</span>
+            {% else %}
+                <span class="status status-planned">{{ project.status }}</span>
+            {% endif %}
+        </div>
+
+        <a href="{{ url_for('projects') }}" class="btn btn-secondary">
+            Back to Projects
+        </a>
+    </div>
+</div>
+
+<div class="card">
+    <h2>Project Details</h2>
+    <p class="project-description">{{ project.description }}</p>
+
+    <h3 class="tech-heading">Technologies Used</h3>
+    <div class="tech-tags">
+    {% for tech in project.tech %}
+        <a href="{{ url_for('skill_projects', skill_name=tech) }}" class="tech-tag">
+            {{ tech }}
+        </a>
+    {% endfor %}
+</div>
+</div>
+
+<div class="info-box">
+    <strong>Dynamic Route in Action!</strong>
+    <p>This page uses the route: <code>/project/&lt;int:project_id&gt;</code></p>
+    <p>Current project ID: <strong>{{ project_id }}</strong></p>
+    <p>URL: <code>{{ url_for('project_detail', project_id=project_id) }}</code></p>
+</div>
+
+<!-- Navigation -->
+<div class="card">
+    <h2>Other Projects</h2>
+    <div class="project-navigation">
+        {% if project_id > 1 %}
+            <a href="{{ url_for('project_detail', project_id=project_id - 1) }}" class="btn btn-secondary">
+                Previous Project
+            </a>
+        {% endif %}
+    </div>
+</div>
+
+{% else %}
+
+<!-- Project Not Found -->
+<div class="card">
+    <div class="not-found">
+        <h2>Project Not Found</h2>
+        <p>Sorry, project #{{ project_id }} doesn't exist.</p>
+
+        <p class="not-found-action">
+            <a href="{{ url_for('projects') }}" class="btn btn-primary">
+                View All Projects
+            </a>
+        </p>
+    </div>
+</div>
+
+<div class="info-box warning">
+    <strong>This is Intentional!</strong>
+    <p>This demonstrates how to handle "not found" scenarios in your templates.</p>
+    <p>The Python code checks if the project exists and passes <code>None</code> if not.</p>
+</div>
+
+{% endif %}
+{% endblock %}

@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% if product %}{{ category_name|title }} - {{ product.name }}{% else %}Product Not Found{% endif %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #f0f4f8;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        nav {
+            margin-bottom: 20px;
+            padding: 10px;
+            background: #edf2f7;
+            border-radius: 5px;
+        }
+        nav a {
+            margin-right: 15px;
+            color: #4a5568;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .breadcrumb {
+            color: #718096;
+            margin-bottom: 20px;
+        }
+        .breadcrumb a {
+            color: #4299e1;
+            text-decoration: none;
+        }
+        .category-header {
+            background: linear-gradient(135deg, #ed8936 0%, #dd6b20 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        .category-header h1 {
+            margin: 0;
+        }
+        .product-card {
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 25px;
+            margin: 20px 0;
+        }
+        .product-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .price-tag {
+            background: #48bb78;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 15px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .not-found {
+            background: #fed7d7;
+            border: 1px solid #fc8181;
+            color: #c53030;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .not-found-list {
+            text-align: left;
+            display: inline-block;
+            margin: 0;
+            padding: 0;
+        }
+        .not-found-list li {
+            margin: 5px 0;
+        }
+        .info-box {
+            background: #faf5ff;
+            border-left: 4px solid #9f7aea;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        code {
+            background: #edf2f7;
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+        .code-block {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: monospace;
+            margin: 10px 0;
+        }
+        ul {
+            padding-left: 20px;
+        }
+        ul li {
+            margin: 8px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav>
+            <a href="/">Home</a>
+            <a href="/about/">About</a>
+            <a href="/links">URL Builder</a>
+            <a href="/search">Search Products</a>
+        </nav>
+        <div class="breadcrumb">
+            <a href="/">Home</a> / 
+            <a href="/search">Products</a> / 
+            Category: {{ category_name|title }}
+        </div>
+        <div class="category-header">
+            <h1>{{ category_name|title }} Category</h1>
+            <p>Product #{{ product_id }}</p>
+        </div>
+        {% if product %}
+        <div class="product-card">
+            <div class="product-header">
+                <h2>{{ product.name }}</h2>
+                <span class="price-tag">${{ "%.2f"|format(product.price) }}</span>
+            </div>
+                <p>{{ product.description }}</p>
+        </div>
+        {% else %}
+        <div class="not-found">
+            <h2>Product Not Found in This Category</h2>
+            <p>Sorry, product #{{ product_id }} doesn't exist in the "{{ category_name }}" category.</p>
+            <p>This might be because:</p>
+            <ul class="not-found-list">
+                <li>The product ID doesn't exist</li>
+                <li>The product exists but belongs to a different category</li>
+            </ul>
+        </div>
+        {% endif %}
+        <div class="info-box">
+            <strong>Multiple Parameter Route</strong>
+            <p>URL Pattern: <code>/category/&lt;category_name&gt;/product/&lt;int:product_id&gt;</code></p>
+            <p>Current URL: <code>/category/{{ category_name }}/product/{{ product_id }}</code></p>            
+            <div class="code-block">
+                @app.route('/category/&lt;category_name&gt;/product/&lt;int:product_id&gt;')<br>
+                def category_product(category_name, product_id):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;product = products.get(product_id)<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;if product and product['category'] == category_name:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return render_template('category_product.html', <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;category_name=category_name, <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;product_id=product_id, <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;product=product)<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;else:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;return render_template('category_product.html', <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;category_name=category_name, <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;product_id=product_id, <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;product=None)
+            </div>
+        </div>
+        <h2>Captured Values</h2>
+        <table class="category-product-table">
+            <tr>
+                <th>Parameter</th>
+                <th>Value</th>
+                <th>Type</th>
+            </tr>
+            <tr>
+                <td><code>category_name</code></td>
+                <td><strong>{{ category_name }}</strong></td>
+                <td>string</td>
+            </tr>
+            <tr>
+                <td><code>product_id</code></td>
+                <td><strong>{{ product_id }}</strong></td>
+                <td>integer</td>
+            </tr>
+        </table>
+        <h2>Try Other Category-Product Combinations</h2>
+        <ul>
+            <li><a href="/category/electronics/product/1">Electronics - Product 1</a></li>
+            <li><a href="/category/books/product/2">Books - Product 2</a></li>
+            <li><a href="/category/home/product/3">Home - Product 3</a></li>
+            <li><a href="/category/electronics/product/4">Electronics - Product 4</a></li>
+            <li><a href="/category/home/product/5">Home - Product 5</a></li>
+            <li><a href="/category/electronics/product/99">Electronics - Product 99 (Not Found)</a></li>
+        </ul>        
+        <p><a href="/">Back to Home</a></p>
+    </div>
+</body>
+</html>

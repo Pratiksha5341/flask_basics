@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Products</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #f0f4f8;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        nav {
+            margin-bottom: 20px;
+            padding: 10px;
+            background: #edf2f7;
+            border-radius: 5px;
+        }
+        nav a {
+            margin-right: 15px;
+            color: #4a5568;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .search-box {
+            text-align: center;
+            margin: 40px 0;
+        }
+        .search-box h1 {
+            color: #2d3748;
+            margin-bottom: 30px;
+        }
+        .search-form {
+            display: flex;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        .search-form input[type="text"] {
+            flex: 1;
+            padding: 15px;
+            border: 2px solid #cbd5e0;
+            border-radius: 8px 0 0 8px;
+            font-size: 16px;
+        }
+        .search-form button {
+            padding: 15px 30px;
+            background: #4299e1;
+            color: white;
+            border: none;
+            border-radius: 0 8px 8px 0;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        .search-form button:hover {
+            background: #3182ce;
+        }
+        .quick-searches {
+            margin: 30px 0;
+        }
+        .quick-searches h3 {
+            color: #4a5568;
+            margin-bottom: 15px;
+        }
+        .quick-searches a {
+            display: inline-block;
+            margin: 5px 10px;
+            padding: 8px 16px;
+            background: #edf2f7;
+            color: #4a5568;
+            text-decoration: none;
+            border-radius: 20px;
+        }
+        .quick-searches a:hover {
+            background: #e2e8f0;
+        }
+        .info-box {
+            background: #f0fff4;
+            border-left: 4px solid #48bb78;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        .code-block {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: monospace;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav>
+            <a href="/">Home</a>
+            <a href="/about/">About</a>
+            <a href="/links">URL Builder</a>
+            <a href="/products">Products</a>
+            <a href="/categories">Product Categories</a>
+            <a href="/search">Search</a>
+        </nav>
+        <div class="search-box">
+            <h1>Search Our Products</h1>
+            
+            <form action="/search" method="POST" class="search-form">
+                <input type="text" name="search_query" placeholder="What are you looking for? (e.g., 'python', 'wireless', 'laptop')" required>
+                <button type="submit">Search</button>
+            </form>
+        </div>
+
+        <div class="quick-searches">
+            <h3>Try these quick searches:</h3>
+            <a href="/search/python">python</a>
+            <a href="/search/wireless">wireless</a>
+            <a href="/search/laptop">laptop</a>
+            <a href="/search/book">book</a>
+            <a href="/search/electronics">electronics</a>
+        </div>
+
+        <div class="info-box">
+            <strong>Two Search Methods Implemented</strong>
+            <p>1. <strong>Form Submission (POST):</strong> Form submits to <code>/search</code> which redirects to <code>/search/query</code></p>
+            <div class="code-block">
+@app.route('/search', methods=['GET', 'POST'])<br>
+def search():<br>
+&nbsp;&nbsp;&nbsp;&nbsp;if request.method == 'POST':<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;query = request.form.get('search_query', '')<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return redirect(url_for('search_results', query=query))<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;return render_template('search_form.html')
+            </div>
+            
+            <p>2. <strong>Direct URL Access (GET):</strong> Directly visit <code>/search/your-query</code></p>
+            <div class="code-block">
+@app.route('/search/&lt;query&gt;')<br>
+def search_results(query):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;# Search logic here<br>
+&nbsp;&nbsp;&nbsp;&nbsp;return render_template('search.html', query=query, results=results)
+            </div>
+        </div>
+
+                        <h3>Available Products</h3>
+        <ul>
+    <li><a href="/product/1">Product 1</a></li>
+    <li><a href="/product/2">Product 2</a></li>
+    <li><a href="/product/3">Product 4</a></li>
+    <li><a href="/product/4">Product 5</a></li>
+</ul>
+        
+        <p><a href="/">Back to Home</a></p>
+    </div>
+</body>
+</html>
